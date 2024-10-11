@@ -67,7 +67,7 @@ int main() {
       countN();
     }
     if (s == 0) {
-      break;
+      break; 
     }
   }
   return 0;
