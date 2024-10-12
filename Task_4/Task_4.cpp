@@ -11,7 +11,10 @@ int factorial(int value) {
 }
 
 double countS(int n, double x) {
-  double S = pow(-1, n) * pow(2 * x, 2 * n) / factorial(2 * n);
+  double S = 0;
+  for (int i = 1; i <= n; ++i) {
+    S += pow(-1, i) * pow(2 * x, 2 * i) / factorial(2 * i);
+  }
   return S;
 }
 
@@ -20,7 +23,8 @@ void intro() {
             << std::endl;
   std::cout << "Эта программа раскладывает функцию Y(x) в ряд S(x)"
             << std::endl;
-  std::cout << "Введите 0 чтобы выйти" << std::endl;
+  std::cout << "*Введите 0 чтобы выйти в любой момент выполнения программы*\n"
+            << std::endl;
 }
 
 int correctInputn() {
@@ -33,7 +37,7 @@ int correctInputn() {
     std::string str = "";
     std::cin >> str;
     try {
-      n = std::stoi(str);
+      n = std::stod(str);
     } catch (std::invalid_argument) {
       std::cout << "Некорректный ввод. Введите число n " << std::endl;
       incorrect = true;
@@ -43,12 +47,12 @@ int correctInputn() {
       incorrect = true;
       error = true;
     }
-    if (n < 0 && error == false) {
+    if ((n < 0 || (n > 0 && n < 1)) && error == false) {
       std::cout << "Некорректный ввод. Введите число n " << std::endl;
       incorrect = true;
     }
   } while (incorrect);
-  return n;
+  return (int)n;
 }
 
 int correctInputNofx() {
@@ -57,13 +61,13 @@ int correctInputNofx() {
       << std::endl;
   bool incorrect = false;
   bool error = false;
-  int Nofx = 0;
+  double Nofx = 0;
   do {
     incorrect = false;
     std::string str = "";
     std::cin >> str;
     try {
-      Nofx = std::stoi(str);
+      Nofx = std::stod(str);
     } catch (std::invalid_argument) {
       std::cout << "Некорректный ввод. Введите количество чисел, от которых вы "
                    "хотите посчитать функцию "
@@ -77,7 +81,7 @@ int correctInputNofx() {
       incorrect = true;
       error = true;
     }
-    if (Nofx < 0 && error == false) {
+    if ((Nofx < 0 || (Nofx > 0 && Nofx < 1)) && error == false) {
       std::cout << "Некорректный ввод. Введите количество чисел, от которых вы "
                    "хотите посчитать функцию"
                 << std::endl;
@@ -85,7 +89,7 @@ int correctInputNofx() {
       incorrect = true;
     }
   } while (incorrect);
-  return Nofx;
+  return (int)Nofx;
 }
 
 double correctInputx() {
@@ -107,7 +111,7 @@ double correctInputx() {
       incorrect = true;
       error = true;
     }
-    if (x < 0.1 && error == false) {
+    if (((x < 0.1 && x != 0) || x > 1) && error == false) {
       std::cout << "Некорректный ввод. Введите x " << std::endl;
       incorrect = true;
     }
@@ -123,15 +127,19 @@ int main() {
       break;
     }
     int Nofx = correctInputNofx();
-    if (n == 0) {
+    if (Nofx == 0) {
       break;
     }
     std::cout << "Введите по одному числу (x от 0.1 до 1)" << std::endl;
-    for (int i = 0; i <= Nofx; ++i) {
+    for (int i = 1; i <= Nofx; ++i) {
       double x = correctInputx();
-      std::cout << "S(x) = " << countS(n, x)
-                << " Y(x) = " << 2 * (pow(cos(x), 2) - 1) << std::endl;
+      if (x == 0) {
+        return 0;
+      }
+      std::cout << "\n S(" << x << ") = " << countS(n, x) << "\n Y(" << x
+                << ") = " << 2 * (pow(cos(x), 2) - 1) << std::endl;
     }
+    std::cout << "\n*Повторное выполнение программы*\n" << std::endl;
   }
   return 0;
 }
