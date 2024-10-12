@@ -1,17 +1,24 @@
 #include <cmath>
+#include <iomanip>
 #include <iostream>
 #include <string>
 
 int factorial(int value) {
   long long int f = 1;
+  if (value > 32) {
+    value = 32;
+  }
   for (int i = 2; i <= value; ++i) {
     f *= i;
   }
   return f;
 }
 
-double countS(int n, double x) {
-  double S = 0;
+long double countS(int n, double x) {
+  long double S = 0;
+  if (n > 16) { 
+    n = 16;
+  }
   for (int i = 1; i <= n; ++i) {
     S += pow(-1, i) * pow(2 * x, 2 * i) / factorial(2 * i);
   }
@@ -136,7 +143,8 @@ int main() {
       if (x == 0) {
         return 0;
       }
-      std::cout << "\n S(" << x << ") = " << countS(n, x) << "\n Y(" << x
+      std::cout << "\n S(" << x << ") = " << std::setprecision(15)
+                << countS(n, x) << "\n Y(" << x
                 << ") = " << 2 * (pow(cos(x), 2) - 1) << std::endl;
     }
     std::cout << "\n*Повторное выполнение программы*\n" << std::endl;
