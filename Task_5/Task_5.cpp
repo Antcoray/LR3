@@ -3,11 +3,25 @@
 #include <string>
 
 double STEP(int parts) {
-    double step = 1 / parts;
-    return step;
+  double step = 1 / (double)parts;
+  return step;
 }
 
-
+double findx(double step) {
+  double ymin = 100;
+  double x = 0;
+  double y = 1;
+  double xmin = 0;
+  for (int i = 0; i <= (1 / step); ++i) {
+    y = sinh(x) + acos(x) - 1.5;
+    if (y < ymin) {
+      ymin = y;
+      xmin = x;
+    }
+    x += step;
+  }
+  return xmin;
+}
 void intro() {
   std::cout
       << "=== Задание 5. Выполнил Колесников Антон Сергеевич. Вариант 12 ==="
@@ -20,7 +34,8 @@ void intro() {
 }
 
 int correctInputP() {
-  std::cout << "Введите на сколько частей разделить область поиска корня" << std::endl;
+  std::cout << "Введите на сколько частей разделить область поиска корня"
+            << std::endl;
   bool incorrect = false;
   bool error = false;
   int n = 0;
@@ -51,7 +66,13 @@ int main() {
   intro();
   while (true) {
     int parts = correctInputP();
+    if (parts == 0) {
+      break;
+    }
     double step = STEP(parts);
+    std::cout << "Корень уравнения --- " << findx(step)
+              << "\n\n *Повторное выполнение программы* \n"
+              << std::endl;
   }
   return 0;
 }
