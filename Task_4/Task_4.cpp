@@ -16,7 +16,7 @@ int factorial(int value) {
 
 long double countS(int n, double x) {
   long double S = 0;
-  if (n > 16) { 
+  if (n > 16) {
     n = 16;
   }
   for (int i = 1; i <= n; ++i) {
@@ -36,94 +36,79 @@ void intro() {
 
 int correctInputn() {
   std::cout << "Введите количество членов ряда (n)" << std::endl;
-  bool incorrect = false;
-  bool error = false;
   int n = 0;
+  bool error = false;
+  bool incorrectInput = false;
   do {
-    incorrect = false;
-    std::string str = "";
-    std::cin >> str;
-    try {
-      n = std::stod(str);
-    } catch (std::invalid_argument) {
+    error = false;
+    incorrectInput = false;
+    std::cin >> n;
+    if (std::cin.fail()) {
+      std::cin.clear();
       std::cout << "Некорректный ввод. Введите число n " << std::endl;
-      incorrect = true;
+      std::cin.ignore(1000000, '\n');
       error = true;
-    } catch (std::out_of_range) {
-      std::cout << "Некорректный ввод. Введите число n " << std::endl;
-      incorrect = true;
+      incorrectInput = true;
+    }
+    if (n < 0 && error == false) {
+      std::cout << "Некорректный ввод. число n " << std::endl;
+      incorrectInput = true;
+    }
+  } while (incorrectInput);
+  return n;
+}
+
+double correctInputx() {
+  double x = 0;
+  bool error = false;
+  bool incorrectInput = false;
+  do {
+    error = false;
+    incorrectInput = false;
+    std::cin >> x;
+    if (std::cin.fail()) {
+      std::cin.clear();
+      std::cout << "Некорректный ввод. Введите x " << std::endl;
+      std::cin.ignore(1000000, '\n');
       error = true;
+      incorrectInput = true;
     }
-    if ((n < 0 || (n > 0 && n < 1)) && error == false) {
-      std::cout << "Некорректный ввод. Введите число n " << std::endl;
-      incorrect = true;
+    if (((x < 0.1 && x != 0) || x > 1) && error == false) {
+      std::cout << "Некорректный ввод. Введите x " << std::endl;
+      incorrectInput = true;
     }
-  } while (incorrect);
-  return (int)n;
+  } while (incorrectInput);
+  return x;
 }
 
 int correctInputNofx() {
   std::cout
       << "Введите количество чисел, от которых вы хотите посчитать функцию"
       << std::endl;
-  bool incorrect = false;
+  int Nofx = 0;
   bool error = false;
-  double Nofx = 0;
+  bool incorrectInput = false;
   do {
-    incorrect = false;
-    std::string str = "";
-    std::cin >> str;
-    try {
-      Nofx = std::stod(str);
-    } catch (std::invalid_argument) {
+    error = false;
+    incorrectInput = false;
+    std::cin >> Nofx;
+    if (std::cin.fail()) {
+      std::cin.clear();
       std::cout << "Некорректный ввод. Введите количество чисел, от которых вы "
                    "хотите посчитать функцию "
                 << std::endl;
-      incorrect = true;
+      std::cin.ignore(1000000, '\n');
       error = true;
-    } catch (std::out_of_range) {
+      incorrectInput = true;
+    }
+    if (Nofx < 0 && error == false) {
       std::cout << "Некорректный ввод. Введите количество чисел, от которых вы "
                    "хотите посчитать функцию "
                 << std::endl;
-      incorrect = true;
-      error = true;
+      incorrectInput = true;
     }
-    if ((Nofx < 0 || (Nofx > 0 && Nofx < 1)) && error == false) {
-      std::cout << "Некорректный ввод. Введите количество чисел, от которых вы "
-                   "хотите посчитать функцию"
-                << std::endl;
-
-      incorrect = true;
-    }
-  } while (incorrect);
-  return (int)Nofx;
-}
-
-double correctInputx() {
-  bool incorrect = false;
-  bool error = false;
-  double x = 0;
-  do {
-    incorrect = false;
-    std::string str = "";
-    std::cin >> str;
-    try {
-      x = std::stod(str);
-    } catch (std::invalid_argument) {
-      std::cout << "Некорректный ввод. Введите x " << std::endl;
-      incorrect = true;
-      error = true;
-    } catch (std::out_of_range) {
-      std::cout << "Некорректный ввод. Введите x " << std::endl;
-      incorrect = true;
-      error = true;
-    }
-    if (((x < 0.1 && x != 0) || x > 1) && error == false) {
-      std::cout << "Некорректный ввод. Введите x " << std::endl;
-      incorrect = true;
-    }
-  } while (incorrect);
-  return x;
+  } while (incorrectInput);
+  return Nofx;
 }
 
 int main() {
