@@ -1,6 +1,6 @@
 #include <iostream>
-#include <string>
 #define pi 3.1415926535897932384626433832
+#define twopi 6.2831853071795864769252867665
 
 int factorial(int value) {
   long long int f = 1;
@@ -21,43 +21,36 @@ double stepen(double value, double stepen) {
   return result;
 }
 
-double sinTaylor(double x) {
-  bool xlt0 = true;
-  while (x > 2 * pi && xlt0) {
-    x -= 2 * pi;
-    if (x - 2 * pi < 0) {
-      xlt0 = false;
-    }
+long long int floor(double x) {
+  long long int intPart = (long long int)x;
+  if (intPart > x && x > 0) {
+    intPart -= 1;
   }
-  while (x < 0 && xlt0) {
-    x += 2 * pi;
-    if (x + 2 * pi > 2 * pi) {
-      xlt0 = false;
-    }
+  if (intPart < x && x < 0) {
+    intPart += 1;
   }
+  return intPart;
+}
+double rangeReduction(double x) {
+  long long int k = floor(x / twopi);
+  double reducedX = x - k * twopi;
+
+  return reducedX;
+}
+
+double sinTaylor(double y) {
+  double x = rangeReduction(y);
   double sinx = 0;
-  for (int i = 0; i <= 10; ++i) {
+  for (int i = 0; i <= 23; ++i) {
     sinx += stepen(-1, i) * stepen(x, 2 * i + 1) / factorial(2 * i + 1);
   }
   return sinx;
 }
 
-double cosTaylor(double x) {
-  bool xlt0 = true;
-  while (x > 2 * pi && xlt0) {
-    x -= 2 * pi;
-    if (x - 2 * pi < 0) {
-      xlt0 = false;
-    }
-  }
-  while (x < 0 && xlt0) {
-    x += 2 * pi;
-    if (x + 2 * pi > 2 * pi) {
-      xlt0 = false;
-    }
-  }
+double cosTaylor(double y) {
+  double x = rangeReduction(y);
   double cosx = 0;
-  for (int i = 0; i <= 10; ++i) {
+  for (int i = 0; i <= 23; ++i) {
     cosx += stepen(-1, i) * stepen(x, 2 * i) / factorial(2 * i);
   }
   return cosx;
@@ -84,7 +77,7 @@ double lnx(double x) {
   double estimating = 0;
   bool inaccurate = true;
   double abc = 0;
-  for (int i = 1; inaccurate && i < 10000; ++i) {
+  for (int i = 1; inaccurate && i < 23; ++i) {
     previous = lnx;
     lnx += stepen(-1, i + 1) * stepen(x - 1, i) / i;
     estimating = lnx;
@@ -112,30 +105,22 @@ void intro() {
 
 double correctInputx() {
   std::cout << "Введите x" << std::endl;
-  bool incorrect = false;
-  bool error = false;
-  double n = 0;
+  double x = 0;
+  // bool error = false;
+  bool incorrectInput = false;
   do {
-    incorrect = false;
-    std::string str = "";
-    std::cin >> str;
-    try {
-      n = std::stod(str);
-    } catch (std::invalid_argument) {
+    // error = false;
+    incorrectInput = false;
+    std::cin >> x;
+    if (std::cin.fail()) {
+      std::cin.clear();
       std::cout << "Некорректный ввод. Введите число x " << std::endl;
-      incorrect = true;
-      error = true;
-    } catch (std::out_of_range) {
-      std::cout << "Некорректный ввод. Введите число x " << std::endl;
-      incorrect = true;
-      error = true;
+      std::cin.ignore(1000000, '\n');
+      // error = true;
+      incorrectInput = true;
     }
-    if ((n < 1e-10 && n > 0) && error == false) {
-      std::cout << "Некорректный ввод. Введите число x " << std::endl;
-      incorrect = true;
-    }
-  } while (incorrect);
-  return n;
+  } while (incorrectInput);
+  return x;
 }
 
 int main() {
@@ -156,7 +141,7 @@ int main() {
       std::cout << "b = " << b << std::endl;
     }
     if (c < b && c < a) {
-      std::cout << "a = " << a << std::endl;
+      std::cout << "с = " << c << std::endl;
     }
   }
   return 0;
