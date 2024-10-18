@@ -21,7 +21,7 @@ void intro() {
   std::cout << "Введите 0 чтобы выйти" << std::endl;
 }
 
-int correctInput() {
+/*int correctInput() {
   bool incorrect = false;
   bool error = false;
   int s;
@@ -57,6 +57,35 @@ int correctInput() {
   } while (incorrect);
   return s;
 }
+*/
+
+int correctInput() {
+  int x = 0;
+  bool error = false;
+  bool incorrectInput = false;
+  do {
+    error = false;
+    incorrectInput = false;
+    std::cin >> x;
+    if (std::cin.fail()) {
+      std::cin.clear();
+      std::cout << "=== Некорректный ввод. Введите 1 чтобы вычислить N или 0 "
+                   "чтобы выйти ==="
+                << std::endl;
+      std::cin.ignore(1000000, '\n');
+      error = true;
+      incorrectInput = true;
+    }
+    if (x != 1 && x != 0 && error == false) {
+      std::cout << "=== Некорректный ввод. Введите 1 чтобы вычислить N или 0 "
+                   "чтобы выйти ==="
+                << std::endl;
+      incorrectInput = true;
+    }
+  } while (incorrectInput);
+  return x;
+}
+
 int main() {
   intro();
   while (true) {
