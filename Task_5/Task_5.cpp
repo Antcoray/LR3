@@ -1,6 +1,5 @@
 #include <cmath>
 #include <iostream>
-#include <string>
 
 double STEP(int parts) {
   double step = 1 / (double)parts;
@@ -36,30 +35,26 @@ void intro() {
 int correctInputP() {
   std::cout << "Введите на сколько частей разделить область поиска корня"
             << std::endl;
-  bool incorrect = false;
+  int x = 0;
   bool error = false;
-  int n = 0;
+  bool incorrectInput = false;
   do {
-    incorrect = false;
-    std::string str = "";
-    std::cin >> str;
-    try {
-      n = std::stod(str);
-    } catch (std::invalid_argument) {
+    error = false;
+    incorrectInput = false;
+    std::cin >> x;
+    if (std::cin.fail()) {
+      std::cin.clear();
       std::cout << "Некорректный ввод. Введите число частей " << std::endl;
-      incorrect = true;
+      std::cin.ignore(1000000, '\n');
       error = true;
-    } catch (std::out_of_range) {
-      std::cout << "Некорректный ввод. Введите число частей " << std::endl;
-      incorrect = true;
-      error = true;
+      incorrectInput = true;
     }
-    if ((n < 0 || (n > 0 && n < 1)) && error == false) {
+    if (x < 0 && error == false) {
       std::cout << "Некорректный ввод. Введите число частей " << std::endl;
-      incorrect = true;
+      incorrectInput = true;
     }
-  } while (incorrect);
-  return (int)n;
+  } while (incorrectInput);
+  return x;
 }
 
 int main() {
