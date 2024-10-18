@@ -77,7 +77,7 @@ double lnx(double x) {
   double estimating = 0;
   bool inaccurate = true;
   double abc = 0;
-  for (int i = 1; inaccurate && i < 23; ++i) {
+  for (int i = 1; inaccurate && i < 1000; ++i) {
     previous = lnx;
     lnx += stepen(-1, i + 1) * stepen(x - 1, i) / i;
     estimating = lnx;
@@ -106,17 +106,15 @@ void intro() {
 double correctInputx() {
   std::cout << "Введите x" << std::endl;
   double x = 0;
-  // bool error = false;
+
   bool incorrectInput = false;
   do {
-    // error = false;
     incorrectInput = false;
     std::cin >> x;
     if (std::cin.fail()) {
       std::cin.clear();
       std::cout << "Некорректный ввод. Введите число x " << std::endl;
       std::cin.ignore(1000000, '\n');
-      // error = true;
       incorrectInput = true;
     }
   } while (incorrectInput);
