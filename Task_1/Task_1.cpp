@@ -1,5 +1,4 @@
 #include <iostream>
-//#include <string>
 
 double countN() {
   int i = 1;
@@ -29,42 +28,6 @@ void intro() {
             << std::endl;
   std::cout << "Введите 0 чтобы выйти" << std::endl;
 }
-
-/*
-int correctInput() {
-  bool incorrect = false;
-  bool error = false;
-  int s;
-  do {
-    incorrect = false;
-    std::string str = "";
-    std::cin >> str;
-    try {
-      s = std::stoi(str);
-    } catch (std::invalid_argument) {
-      std::cout << "=== Некорректный ввод. Введите 1 чтобы вычислить N или 0 "
-                   "чтобы выйти ==="
-                << std::endl;
-      incorrect = true;
-      error = true;
-    } catch (std::out_of_range) {
-      std::cout << "=== Некорректный ввод. Введите 1 чтобы вычислить N или 0 "
-                   "чтобы выйти ==="
-                << std::endl;
-      incorrect = true;
-      error = true;
-    }
-    if (s != 1 && s != 0 && error == false) {
-      std::cout << "=== Некорректный ввод. Введите 1 чтобы вычислить N или 0 "
-                   "чтобы выйти ==="
-                << std::endl;
-
-      incorrect = true;
-    }
-  } while (incorrect);
-  return s;
-}
-*/
 
 int correctInput() {
   int x = 0;
