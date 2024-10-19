@@ -1,13 +1,16 @@
 #include <iostream>
 #define pi 3.1415926535897932384626433832
 #define twopi 6.2831853071795864769252867665
+#define stepForLn 2.302585093
+#define rad 57.295779513
+#define lg2pi 0.798179868
 
 long long int factorial(int value) {
   long long int f = 1;
   if (value > 32) {
     value = 32;
   }
-  for (int i = 2; i <= value; ++i) {
+  for (int i = 1; i <= value; ++i) {
     f *= i;
   }
   return f;
@@ -32,16 +35,29 @@ long long int floor(double x) {
   return intPart;
 }
 double rangeReduction(double x) {
-  long long int k = floor(x / twopi);
-  double reducedX = x - k * twopi;
-
+  bool veryBigNum = false;
+  double reducedX = 0;
+  if (x > 1e15) {
+    int n = 0;
+    veryBigNum = true;
+    double x1 = x;
+    for (int i = 1; x1 >= 10; ++i) {
+      x1 = x1 / 10;
+      n = i;
+    }
+    double ostatok = twopi * (n - lg2pi * floor(n / lg2pi));
+    return ostatok;
+  } else {
+    long long int k = floor(x / twopi);
+    reducedX = x - k * twopi;
+  }
   return reducedX;
 }
 
 double sinTaylor(double y) {
   double x = rangeReduction(y);
   double sinx = 0;
-  for (int i = 0; i <= 23; ++i) {
+  for (int i = 0; i <= 10; ++i) {
     sinx += stepen(-1, i) * stepen(x, 2 * i + 1) / factorial(2 * i + 1);
   }
   return sinx;
@@ -50,7 +66,7 @@ double sinTaylor(double y) {
 double cosTaylor(double y) {
   double x = rangeReduction(y);
   double cosx = 0;
-  for (int i = 0; i <= 23; ++i) {
+  for (int i = 0; i <= 10; ++i) {
     cosx += stepen(-1, i) * stepen(x, 2 * i) / factorial(2 * i);
   }
   return cosx;
@@ -77,12 +93,12 @@ double lnx(double x) {
   double estimating = 0;
   bool inaccurate = true;
   double abc = 0;
-  for (int i = 1; inaccurate && i < 1000; ++i) {
+  for (int i = 1; inaccurate; ++i) {
     previous = lnx;
     lnx += stepen(-1, i + 1) * stepen(x - 1, i) / i;
     estimating = lnx;
     abc = myabs(previous - estimating);
-    if (abc <= 1e-9) {
+    if (abc <= 1e-5) {
       inaccurate = false;
     }
   }
@@ -90,6 +106,19 @@ double lnx(double x) {
     lnx = -1 * lnx;
   }
   return lnx;
+}
+
+double bigLn(double x) {
+  double Ln = 0;
+  int n = 0;
+  for (int i = 0; x >= 10; ++i) {
+    x = x / 10;
+    n = i;
+  }
+  for (int i = 0; i <= n; ++i) {
+    Ln += stepForLn;
+  }
+  return Ln;
 }
 
 void intro() {
@@ -122,16 +151,24 @@ double correctInputx() {
 }
 
 int main() {
+  double c = 0;
+  bool xBigNumber = false;
   intro();
   while (true) {
     double x = correctInputx();
     if (x == 0) {
       break;
     }
+    if (x > 1e4) {
+      xBigNumber = true;
+    }
     double a = sinTaylor(x);
     double b = cosTaylor(x);
-    double c = lnx(x);
-
+    if (xBigNumber) {
+      c = bigLn(x);
+    } else {
+      c = lnx(x);
+    }
     if (a < b && a < c) {
       std::cout << "a = " << a << std::endl;
     }
