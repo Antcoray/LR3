@@ -2,7 +2,7 @@
 #define pi 3.1415926535897932384626433832
 #define twopi 6.2831853071795864769252867665
 
-int factorial(int value) {
+long long int factorial(int value) {
   long long int f = 1;
   if (value > 32) {
     value = 32;
