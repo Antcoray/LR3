@@ -1,7 +1,6 @@
 #include <cmath>
 #include <iomanip>
 #include <iostream>
-#include <string>
 
 int factorial(int value) {
   long long int f = 1;
