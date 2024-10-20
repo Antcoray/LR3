@@ -35,11 +35,9 @@ long long int floor(double x) {
   return intPart;
 }
 double rangeReduction(double x) {
-  bool veryBigNum = false;
   double reducedX = 0;
   if (x > 1e15) {
     int n = 0;
-    veryBigNum = true;
     double x1 = x;
     for (int i = 1; x1 >= 10; ++i) {
       x1 = x1 / 10;
