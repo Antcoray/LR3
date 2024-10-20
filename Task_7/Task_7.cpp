@@ -29,39 +29,40 @@ int correctInputx() {
       error = true;
       incorrectInput = true;
     }
-    if (x < 154 && error == false) {
+    if (x < 154 && x != 0 && error == false) {
       std::cout << "Некорректный ввод. Введите число x " << std::endl;
       incorrectInput = true;
     }
   } while (incorrectInput);
   return x;
 }
-long long int countDigits(long long int y) {
-  long long int numOfDigits = 1;
-  long long int NewNum = y;
-  for (long long int i = 1; NewNum >= 1; ++i) {
+
+int countDigits(int y) {
+  int numOfDigits = 1;
+  int NewNum = y;
+  for (int i = 1; NewNum >= 1; ++i) {
     NewNum = NewNum / 10;
     numOfDigits = i;
   }
   return numOfDigits;
 }
 
-bool checkIfArmstrong(long long int x) {
-  long long int sum = 0;
-  long long int numOfDigits = countDigits(x);
+bool checkIfArmstrong(int x) {
+  int sum = 0;
+  int numOfDigits = countDigits(x);
   std::string strX = std::to_string(x);
+  int d = 0;
   for (char digit : strX) {
-    std::cout << digit << "\n";
+    d = digit - '0';
+    sum += pow(d, numOfDigits);
   }
-  return true;
+  return sum == x;
 }
 int findNum(double x) {
-  for (long long int num = 153; num > x; ++num) {
-    
+  for (int num = 153; num < x; ++num) {
     if (checkIfArmstrong(num)) {
       std::cout << num << '\n';
     }
-  
   }
   return 0;
 }
@@ -69,6 +70,9 @@ int main() {
   intro();
   while (true) {
     double x = correctInputx();
+    if (x == 0) {
+      break;
+    }
     findNum(x);
   }
   return 0;
