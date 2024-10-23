@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iostream>
 #define pi 3.1415926535897932384626433832
 #define twopi 6.2831853071795864769252867665
@@ -24,7 +25,7 @@ double stepen(double value, double stepen) {
   return result;
 }
 
-long long int floor(double x) {
+long long int myfloor(double x) {
   long long int intPart = (long long int)x;
   if (intPart > x && x > 0) {
     intPart -= 1;
@@ -36,17 +37,17 @@ long long int floor(double x) {
 }
 double rangeReduction(double x) {
   double reducedX = 0;
-  if (x > 1e15) {
+  if (x > 1e16) {
     int n = 0;
     double x1 = x;
     for (int i = 1; x1 >= 10; ++i) {
       x1 = x1 / 10;
       n = i;
     }
-    double ostatok = twopi * (n - lg2pi * floor(n / lg2pi));
+    double ostatok = twopi * (n - lg2pi * myfloor(n / lg2pi));
     return ostatok;
   } else {
-    long long int k = floor(x / twopi);
+    long long int k = myfloor(x / twopi);
     reducedX = x - k * twopi;
   }
   return reducedX;
@@ -96,7 +97,7 @@ double lnx(double x) {
     lnx += stepen(-1, i + 1) * stepen(x - 1, i) / i;
     estimating = lnx;
     abc = myabs(previous - estimating);
-    if (abc <= 1e-5) {
+    if (abc <= 1e-4) {
       inaccurate = false;
     }
   }
@@ -109,13 +110,24 @@ double lnx(double x) {
 double bigLn(double x) {
   double Ln = 0;
   int n = 0;
-  for (int i = 0; x >= 10; ++i) {
-    x = x / 10;
-    n = i;
+  if (x >= 1e4) {
+    for (int i = 0; x >= 10; ++i) {
+      x = x / 10;
+      n = i;
+    }
+    for (int i = 0; i <= n; ++i) {
+      Ln += stepForLn;
+    }
+  } else {
+    for (int i = 0; x <= 0.99; ++i) {
+      x = x * 10;
+      n = i;
+    }
+    for (int i = 0; i <= n; ++i) {
+      Ln -= stepForLn;
+    }
   }
-  for (int i = 0; i <= n; ++i) {
-    Ln += stepForLn;
-  }
+
   return Ln;
 }
 
@@ -157,7 +169,7 @@ int main() {
     if (x == 0) {
       break;
     }
-    if (x > 1e4) {
+    if (x >= 1e4 || x <= 1e-4) {
       xBigNumber = true;
     }
     double a = sinTaylor(x);
@@ -167,7 +179,7 @@ int main() {
     } else {
       c = lnx(x);
     }
-    if (a < b && a < c) {
+    /*if (a < b && a < c) {
       std::cout << "a = " << a << std::endl;
     }
     if (b < a && b < c) {
@@ -175,7 +187,13 @@ int main() {
     }
     if (c < b && c < a) {
       std::cout << "с = " << c << std::endl;
-    }
+    }*/
+    std::cout << "mysinx = " << a << std::endl;
+    std::cout << "cmath sinx = " << sin(x) << std::endl;
+    std::cout << "mycosx = " << b << std::endl;
+    std::cout << "cmath cosx = " << cos(x) << std::endl;
+    std::cout << "mylogx = " << c << std::endl;
+    std::cout << "cmath logx = " << log(x) << std::endl;
   }
   return 0;
 }
