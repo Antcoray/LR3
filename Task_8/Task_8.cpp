@@ -68,18 +68,19 @@ void intro() {
                "+ ... + 2^(n-1) * (-1)^(n-1) * an-1 без использования "
                "вещественной арифметики"
             << std::endl;
-  std::cout << "*Введите 0 чтобы выйти*\n" << std::endl;
+  std::cout << "*Введите  n = 0 чтобы выйти*\n" << std::endl;
 }
 
 int correctInputn() {
   std::cout << "Введите число n" << std::endl;
-  int x = 0;
+  double x = 0;
   bool error = false;
   bool incorrectInput = false;
   do {
     error = false;
     incorrectInput = false;
     std::cin >> x;
+    int y = x;
     if (std::cin.fail()) {
       std::cin.clear();
       std::cout << "Некорректный ввод. Введите число n" << std::endl;
@@ -87,9 +88,10 @@ int correctInputn() {
       error = true;
       incorrectInput = true;
     }
-    if ((x >= 1 || x == 0) && error == false) {
+    if ((x >= 1 || x == 0) && error == false && x == (double)y) {
       incorrectInput = false;
     } else {
+      std::cout << "Некорректный ввод. Введите число n" << std::endl;
       incorrectInput = true;
     }
   } while (incorrectInput);
@@ -99,17 +101,20 @@ int correctInputn() {
 std::string correctInputa(int index) {
   std::cout << "Введите число a" << index << std::endl;
   std::string x = "";
-  bool error = false;
   bool incorrectInput = false;
   do {
-    error = false;
     incorrectInput = false;
     std::cin >> x;
     if (std::cin.fail()) {
       std::cin.clear();
       std::cout << "Некорректный ввод. Введите число a" << index << std::endl;
       std::cin.ignore(1000000, '\n');
-      error = true;
+      incorrectInput = true;
+    }
+    try {
+      double i = std::stod(x);
+    } catch (std::invalid_argument) {
+      std::cout << "Некорректный ввод. Введите число a" << index << std::endl;
       incorrectInput = true;
     }
   } while (incorrectInput);
@@ -126,9 +131,9 @@ int main() {
     std::vector<bubble> a;
     for (int i = 0; i < n; ++i) {
       std::string aStr = correctInputa(i);
-      if (aStr == "0") {
+      /*if (aStr == "0") {
         return 0;
-      }
+      }*/
       a.push_back(divideNumber(aStr));
     }
     bubble result(0);
