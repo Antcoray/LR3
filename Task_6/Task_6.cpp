@@ -110,6 +110,9 @@ double lnx(double x) {
 double bigLn(double x) {
   double Ln = 0;
   int n = 0;
+  if (x < 0) {
+    x *= -1;
+  }
   if (x >= 1e4) {
     for (int i = 0; x >= 10; ++i) {
       x = x / 10;
@@ -169,7 +172,7 @@ int main() {
     if (x == 0) {
       break;
     }
-    if (x >= 1e4 || x <= 1e-4) {
+    if (myabs(x) >= 1e4 || myabs(x) <= 1e-4) {
       xBigNumber = true;
     }
     double a = sinTaylor(x);
@@ -193,7 +196,7 @@ int main() {
     std::cout << "mycosx = " << b << std::endl;
     std::cout << "cmath cosx = " << cos(x) << std::endl;
     std::cout << "mylogx = " << c << std::endl;
-    std::cout << "cmath logx = " << log(x) << std::endl;
+    std::cout << "cmath logx = " << log(myabs(x)) << std::endl;
   }
   return 0;
 }
