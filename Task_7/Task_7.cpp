@@ -143,7 +143,7 @@ int correctInputx() {
       error = true;
       incorrectInput = true;
     }
-    if (x < 154 && x > 1e9 && x != 0 && error == false) {
+    if (x < 1 && x > 1e9 && x != 0 && error == false) {
       std::cout << "Некорректный ввод. Введите число x " << std::endl;
       incorrectInput = true;
     }
@@ -175,7 +175,7 @@ bool checkIfArmstrong(int x) {
 
 int findNum(double x) {
   std::cout << "Числа Армстронга:" << '\n';
-  for (int num = 153; num < x; ++num) {
+  for (int num = 1; num < x; ++num) {
     if (checkIfArmstrong(num)) {
       std::cout << num << '\n';
     }
