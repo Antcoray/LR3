@@ -5,17 +5,17 @@
 
 const int Q = 1000000;
 
-struct bubble {
+struct mydouble {
   int whole;
   int fraction;
 
-  bubble(double value = 0) {
+  mydouble(double value) {
     whole = (int)value;
     fraction = (int)(round((value - whole) * Q));
   }
 
-  bubble operator+(const bubble& other) const {
-    bubble result(0);
+  mydouble operator+(const mydouble& other) const {
+    mydouble result(0);
     result.whole = whole + other.whole;
     result.fraction = fraction + other.fraction;
 
@@ -26,14 +26,42 @@ struct bubble {
     return result;
   }
 
-  bubble operator-(const bubble& other) const {
-    bubble result(0);
+  /*  mydouble operator-(const mydouble& other) const {
+      mydouble result(0);
+      result.whole = whole - other.whole;
+      result.fraction = fraction - other.fraction;
+
+      if (result.fraction < 0) {
+        if (result.whole < 0) {
+          result.whole += 1;
+          result.fraction += Q;
+        }
+        if (result.whole >= 0) {
+          result.whole -= 1;
+          result.fraction += Q;
+        }
+      } else if (result.fraction >= Q) {
+        result.whole += 1;
+        result.fraction -= Q;
+      }
+      return result;
+    } */
+
+  mydouble operator-(const mydouble& other) const {
+    mydouble result(0);
     result.whole = whole - other.whole;
     result.fraction = fraction - other.fraction;
-
+    if (result.whole < 0) {
+      result.fraction *= -1;
+    }
     if (result.fraction < 0) {
-      result.whole -= 1;
-      result.fraction += Q;
+      if (result.whole < 0) {
+        result.whole += 1;
+        result.fraction += Q;
+      } else {
+        result.whole -= 1;
+        result.fraction += Q;
+      }
     } else if (result.fraction >= Q) {
       result.whole += 1;
       result.fraction -= Q;
@@ -41,8 +69,8 @@ struct bubble {
     return result;
   }
 
-  bubble operator*(int multiplier) const {
-    bubble result(0);
+  mydouble operator*(int multiplier) const {
+    mydouble result(0);
     result.whole = whole * multiplier;
     result.fraction = fraction * multiplier;
 
@@ -56,9 +84,9 @@ struct bubble {
   }
 };
 
-bubble divideNumber(const std::string& input) {
+mydouble divideNumber(const std::string& input) {
   double value = std::stod(input);
-  return bubble(value);
+  return mydouble(value);
 }
 
 void intro() {
@@ -128,15 +156,17 @@ int main() {
     if (n == 0) {
       break;
     }
-    std::vector<bubble> a;
+    std::vector<mydouble> a;
     for (int i = 0; i < n; ++i) {
       std::string aStr = correctInputa(i);
       /*if (aStr == "0") {
         return 0;
       }*/
       a.push_back(divideNumber(aStr));
+      mydouble k = a[i];
+      k.print();
     }
-    bubble result(0);
+    mydouble result(0);
     int power_of_two = 1;
     for (int i = 0; i < n; ++i) {
       int sign = (i % 2 == 0) ? 1 : -1;
